@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Home from "./pages/Home";
-import Moovie from "./pages/Moovie";
+import Movie from "./pages/Movie";
 import Header from "./components/Header";
 
 function RoutesApp() {
@@ -10,7 +10,7 @@ function RoutesApp() {
             <Header />
             <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="/moovie/:id" element={<Moovie />} />
+                <Route path="/movie/:id" element={<Movie />} />
             </Routes>
         </BrowserRouter>
 
