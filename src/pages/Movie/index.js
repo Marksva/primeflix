@@ -15,7 +15,6 @@ function Movie() {
                     language: "pt-BR"
                 }
             }).then((response) => {
-                // console.log(response.data);
                 setMovie(response.data);
                 setLoading(false);
             }).catch(() => {
