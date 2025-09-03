@@ -9,6 +9,7 @@
 
 .movie-info h1 {
     margin: 14px 0;
+    color: #FFF;
 }
 
 .movie-info img {
@@ -21,12 +22,16 @@
 
 .movie-info h3 {
     margin-top: 14px;
+    color: #FFF;
 }
 
 .movie-info span {
     margin: 6px 0;
+    color: #FFF;
 }
-
+.movie-info strong {
+    color: #FFF;
+}
 .area-buttons button {
     margin-right: 12px;
     margin-top: 14px;
@@ -41,7 +46,7 @@
 }
 
 .area-buttons button:hover {
-   background-color: brown;
+   background-color:#116FEB;
    color: #FFF;
 }
 
