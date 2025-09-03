@@ -44,6 +44,10 @@ src/
     api.js
 ```
 
+## Deploy
+Acesse o projeto online:
+👉 [https://primeflix-black-five.vercel.app/](https://primeflix-black-five.vercel.app/)
+
 ## Como executar
 1. Clone o repositório:
    ```powershell
