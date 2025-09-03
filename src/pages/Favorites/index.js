@@ -7,6 +7,7 @@ function Favorites() {
     const [movies, setMovies] = useState([]);
 
     useEffect(() => {
+        document.title = "Primeflix - Meus Filmes";
         const myList = localStorage.getItem("@primeflix");
         setMovies(JSON.parse(myList) || []);
 

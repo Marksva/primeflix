@@ -9,7 +9,7 @@ function Home() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-
+        document.title = "Primeflix";
         async function loadMovies() {
             const response = await api.get("movie/now_playing", {
                 params: {

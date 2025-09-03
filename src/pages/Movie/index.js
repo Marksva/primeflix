@@ -19,6 +19,7 @@ function Movie() {
                 }
             }).then((response) => {
                 setMovie(response.data);
+                document.title = "Primeflix - " + response.data.title;
                 setLoading(false);
             }).catch(() => {
                 navigate("/", { replace: true });
