@@ -27,3 +27,9 @@
   color: #bbb !important; 
   opacity: 1;            
 }
+.form-control {
+    height: 50px;
+}
+.height {
+    height: 50px;
+}
