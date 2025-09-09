@@ -6,7 +6,7 @@ function Header() {
         <header>
             <Link className='logo text-primary' to="/">PrimeFlix</Link>
             <div className='area-buttons-header'>
-                <Link className='movies btn btn-secondary bold' to="/favorites">Meus filmes</Link>
+                <Link className='movies btn btn-secondary bold' to="/favorites">Meus filmes 🍿</Link>
                 <Link className='bold btn btn-primary text-light' to="/auth">Entrar</Link>
             </div>
         </header>
