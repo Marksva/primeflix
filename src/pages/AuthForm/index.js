@@ -1,27 +1,48 @@
 
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import './login.css'
 import { auth } from '../../services/firebaseConnection';
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { toast } from "react-toastify";
 
 function AuthForm() {
+    const navigate = useNavigate();
+    
     const [showPassword, setShowPassword] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLogin, setIsLogin] = useState(true);
+    const [userDetail, setUserDetail] = useState({});
+    const [user, setUser] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (isLogin) {
-            alert(`Login em desenvolvimento`);
-            return;
+            await login();
         } else {
-            await Register();
+            await register();
         }
     };
 
-    async function Register() {
+    async function login() {
+        await signInWithEmailAndPassword(auth, email, password)
+            .then((value) => {
+                setUserDetail({
+                    uid: value.user.uid,
+                    email: value.user.email
+                })
+                toast.success(`Bem-vindo! ${value.user.email}  🙂`)
+                setUser(true);
+                navigate("/");
+            })
+            .catch((error) => {
+                toast.warn("Erro ao tentar fazer login! 😓" + error);
+                console.log("Erro ao tentar fazer login" + error);
+            })
+    }
+
+    async function register() {
         await createUserWithEmailAndPassword(auth, email, password)
             .then((value) => {
                 toast.success("Cadastro realizado com sucesso! 🙂")
