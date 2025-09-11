@@ -2,27 +2,67 @@ import { useEffect, useState } from "react";
 import './favorites.css';
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useAuth } from "../../hooks/useAuth.js";
+import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
+import { db, auth } from "../../services/firebaseConnection.js";
 
 function Favorites() {
     const [movies, setMovies] = useState([]);
 
+    const { user, userDetail } = useAuth();
+
     useEffect(() => {
         document.title = "Primeflix - Meus Filmes";
-        const myList = localStorage.getItem("@primeflix");
-        setMovies(JSON.parse(myList) || []);
-    }, [])
 
-    function handleDelete(id) {
-        let filterMovies = movies.filter((item) => item.id !== id);
-        setMovies(filterMovies);
-        localStorage.setItem("@primeflix", JSON.stringify(filterMovies));
-        toast.success("Filme removido com sucesso!");
+        async function fetchFavorites() {
+            
+            const user = auth.currentUser;
+
+            if (!user) {
+                return;
+            }
+
+            try {
+                const userDocRef = doc(db, "users", user.uid);
+                const favoritesColRef = collection(userDocRef, "favorites");
+                const querySnapshot = await getDocs(favoritesColRef);
+
+                const favMovies = querySnapshot.docs.map(doc => doc.data());
+                setMovies(favMovies);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        fetchFavorites();
+    }, [user]);
+
+
+    async function handleDelete(id) {
+        const user = auth.currentUser;
+        if (!user) return;
+
+        try {
+            const userDocRef = doc(db, "users", user.uid);
+            const favoritesColRef = collection(userDocRef, "favorites");
+            const movieDocRef = doc(favoritesColRef, String(id));
+
+            await deleteDoc(movieDocRef);
+
+            const updatedMovies = movies.filter(m => m.id !== id);
+            setMovies(updatedMovies);
+            toast.success("Filme removido com sucesso!");
+        } catch (error) {
+            console.error(error);
+            toast.error("Erro ao remover filme!");
+        }
     }
 
     return (
         <div className="container">
             <h1>Meus Filmes</h1>
-            {movies.length === 0 && <span className="empty">Você não possui nenhum filme salvo :(</span>}
+            {!user && <span className="empty">Você precisa estar logado para ver seus filmes salvos.</span>}
+            {user && movies.length === 0 && <span className="empty">Você não possui nenhum filme salvo :(</span>}
             <div className="list-movies">
                 {movies.map((movie) => (
                     <article key={movie.id}>
