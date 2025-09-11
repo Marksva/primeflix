@@ -29,9 +29,6 @@ function Movie() {
 
         LoadMovie();
 
-        return () => {
-            console.log("Componente desmontado");
-        }
 
     }, [navigate, id]);
     
