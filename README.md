@@ -2,6 +2,13 @@
 
 PrimeFlix é uma aplicação web para explorar e favoritar filmes, utilizando a API do The Movie Database (TMDb).
 
+## Deploy
+Acesse a demo do projeto online:
+👉 [https://primeflix-black-five.vercel.app/](https://primeflix-black-five.vercel.app/)
+<img width="1209" height="911" alt="image" src="https://github.com/user-attachments/assets/99e3eef9-7f0e-45f1-8ac4-5131ce1a52f5" />
+
+
+
 ## Funcionalidades
 - Autenticação de usuário com Firebase
 - Listagem dos filmes populares
@@ -49,9 +56,7 @@ src/
     useAuth.js
 ```
 
-## Deploy
-Acesse o projeto online:
-👉 [https://primeflix-black-five.vercel.app/](https://primeflix-black-five.vercel.app/)
+
 
 ## Como executar
 1. Clone o repositório:
