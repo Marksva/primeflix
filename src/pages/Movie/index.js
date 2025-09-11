@@ -3,6 +3,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import './movie-info.css';
 import api from "../../services/api";
 import { toast } from "react-toastify";
+import { useAuth } from "../../hooks/useAuth.js";
+import { doc, setDoc, collection, getDoc } from "firebase/firestore";
+import { auth, db } from "../../services/firebaseConnection";
 
 function Movie() {
     const { id } = useParams();
@@ -10,6 +13,8 @@ function Movie() {
 
     const [movie, setMovie] = useState({});
     const [loading, setLoading] = useState(true);
+
+    const { user, userDetail } = useAuth();
 
     useEffect(() => {
         async function LoadMovie() {
@@ -31,22 +36,41 @@ function Movie() {
 
 
     }, [navigate, id]);
-    
-    function saveMovie() {
-        const myList = localStorage.getItem("@primeflix");
-        let savedMovies = JSON.parse(myList) || [];
 
-        const hasMovie = savedMovies.some((savedMovie) => savedMovie.id === movie.id)
+    async function saveMovie() {
 
-        if (hasMovie) {
+        if (!user) {
+            toast.warn("Você precisa estar logado para salvar filmes.");
+            return;
+        }
+
+        const userDocRef = doc(db, "users", userDetail.uid);
+
+        const favoritesColRef = collection(userDocRef, "favorites");
+
+        const movieDocRef = doc(favoritesColRef, String(movie.id));
+
+        const docSnap = await getDoc(movieDocRef);
+        if (docSnap.exists()) {
             toast.warn("Você já possui esse filme salvo!");
             return;
-        } 
+        }
 
-        savedMovies.push(movie);
+        await setDoc(movieDocRef, {
+            id: movie.id,
+            title: movie.title,
+            poster_path: movie.poster_path,
+            overview: movie.overview,
+            vote_average: movie.vote_average,
+            backdrop_path: movie.backdrop_path,
+            createdAt: new Date()
+        }).then(() => {
+            toast.success("Filme salvo com sucesso!");
+        }).catch((error) => {
+            toast.error("Erro ao salvar filme!");
+            console.log(error);
+        })
 
-        localStorage.setItem("@primeflix", JSON.stringify(savedMovies));
-        toast.success("Filme salvo com sucesso!");
     }
 
     if (loading) {
