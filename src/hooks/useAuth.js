@@ -9,7 +9,6 @@ export function useAuth() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log("esta logado");
         setUser(true);
         setUserDetail({
           uid: user.uid,
