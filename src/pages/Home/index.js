@@ -7,23 +7,29 @@ function Home() {
 
     const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [offset, setOffset] = useState(1);
 
     useEffect(() => {
         document.title = "Primeflix";
-        async function loadMovies() {
-            const response = await api.get("movie/now_playing", {
-                params: {
-                    language: 'pt-BR',
-                    page: 1
-                }
-            })
-            setMovies(response.data.results);
-            setLoading(false);
-        }
-
         loadMovies();
 
-    }, [])
+    }, [offset]);
+
+    async function loadMovies() {
+        const response = await api.get("movie/now_playing", {
+            params: {
+                language: 'pt-BR',
+                page: offset
+            }
+        })
+        const listMovies = [...movies, ...response.data.results];
+        setMovies(listMovies);
+        setLoading(false);
+    }
+
+    function handleMore() {
+        setOffset(offset + 1);
+    }
 
     if (loading) {
         return (
@@ -48,6 +54,9 @@ function Home() {
                     )
                 })}
             </div>
+            <button className='more' onClick={handleMore}>
+                Carregar mais...
+            </button>
         </div>
     )
 }
